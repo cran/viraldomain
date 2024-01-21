@@ -1,27 +1,23 @@
-#' Create a MARS Domain Plot
+#' Create a Normalized Domain Plot
 #'
-#' This function generates a domain plot for a MARS (Multivariate Adaptive
-#' Regression Splines) model based on PCA distances of the provided data.
+#' This function generates a domain plot for a normalized model based on PCA
+#' distances of the provided data.
 #'
-#' @import applicable
-#' @import dplyr
-#' @import earth
-#' @import ggplot2
-#' @import recipes
-#' @import vdiffr
-#' @importFrom stats as.formula
-#' @importFrom stats rexp
+#' @import nnet
 #'
-#' @param features A list of features according to their modeling roles. It should contain the following elements:
-#'   - 'featured_col': Name of the featured column in the training data. When specifying the featured column, use "jitter_*" as a prefix to the featured variable of interest.
-#'   - 'features_vl': Names of the columns containing viral load data (numeric values).
-#'   - 'features_cd': Names of the columns containing CD4 data (numeric values).
-#' @param train_data The training data used to fit the MARS model.
-#' @param test_data The testing domain data used to calculate PCA distances.
-#' @param treshold_value The threshold for domain applicability scoring.
-#' @param impute_hyperparameters A list of parameters for imputation including 'indetect' (undetectable viral load level), 'tasa_exp' (exponential distribution rate of undetectable values), and 'semi' (set a seed for reproducibility).
+#' @param features A list containing the following elements:
+#'   - \code{featured_col}: The name of the featured column.
+#'   - \code{features_vl}: A character vector of feature names related to viral load.
+#'   - \code{features_cd}: A character vector of feature names related to cluster of differentiation.
+#' @param train_data A data frame containing the training data.
+#' @param test_data A data frame containing the test data.
+#' @param treshold_value The threshold value for the domain plot.
+#' @param impute_hyperparameters A list of hyperparameters for imputation, including:
+#'   - \code{indetect}: The undetectable viral load level.
+#'   - \code{tasa_exp}: The exponential distribution rate of undetectable values.
+#'   - \code{semi}: The seed for random number generation (for reproducibility).
 #'
-#' @return A domain plot showing PCA distances.
+#' @return A domain plot visualizing the distances of imputed values.
 #' @export
 #'
 #' @examples
@@ -38,8 +34,8 @@
 #' test_data = sero
 #' treshold_value = 0.99
 #' impute_hyperparameters = list(indetect = 40, tasa_exp = 1/13, semi = 123)
-#' mars_domain_plot(features, train_data, test_data, treshold_value, impute_hyperparameters)
-mars_domain_plot <- function(features, train_data, test_data, treshold_value, impute_hyperparameters) {
+#' normalized_domain_plot(features, train_data, test_data, treshold_value, impute_hyperparameters)
+normalized_domain_plot <- function(features, train_data, test_data, treshold_value, impute_hyperparameters) {
   set.seed(impute_hyperparameters$semi)
   applicable::apd_pca(
     x = recipes::recipe(
@@ -67,7 +63,8 @@ mars_domain_plot <- function(features, train_data, test_data, treshold_value, im
           )
         ) |>
         scale() |>
-        dplyr::as_tibble()),
+        dplyr::as_tibble()) |>
+      recipes::step_normalize(recipes::all_numeric()),
     data = test_data |>
       dplyr::transmute(
         dplyr::across(
@@ -95,5 +92,5 @@ mars_domain_plot <- function(features, train_data, test_data, treshold_value, im
       dplyr::as_tibble(),
     treshold_value
   ) |>
-    applicable::autoplot.apd_pca() + ggplot2::labs(x = "mars domain")
+    applicable::autoplot.apd_pca() + ggplot2::labs(x = "normalized domain")
 }

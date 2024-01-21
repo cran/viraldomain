@@ -23,6 +23,6 @@
 #'Juan Pablo Acuña González <22253567@uagro.mx>
 #'
 #' @examples
-#' data(viral)
-#' viral
+#' data(sero)
+#' sero
 "sero"

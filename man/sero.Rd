@@ -23,8 +23,8 @@ aid in developing diagnostic tools within a seropositive context.
 To explore more rows of this dataset, you can use the \code{print(n = ...)} function.
 }
 \examples{
-data(viral)
-viral
+data(sero)
+sero
 }
 \author{
 Juan Pablo Acuña González \href{mailto:22253567@uagro.mx}{22253567@uagro.mx}
