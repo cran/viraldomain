@@ -61,9 +61,7 @@ normalized_domain_plot <- function(features, train_data, test_data, treshold_val
             ~ jitter(.),
             .names = "jittered_{.col}"
           )
-        ) |>
-        scale() |>
-        dplyr::as_tibble()) |>
+        )) |>
       recipes::step_normalize(recipes::all_numeric()),
     data = test_data |>
       dplyr::transmute(
@@ -87,9 +85,7 @@ normalized_domain_plot <- function(features, train_data, test_data, treshold_val
           ~ jitter(.),
           .names = "jittered_{.col}"
         )
-      ) |>
-      scale() |>
-      dplyr::as_tibble(),
+      ),
     treshold_value
   ) |>
     applicable::autoplot.apd_pca() + ggplot2::labs(x = "normalized domain")
