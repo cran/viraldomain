@@ -4,50 +4,32 @@
 \alias{simple_domain_plot}
 \title{Create a Simple Domain Plot}
 \usage{
-simple_domain_plot(
-  features,
-  train_data,
-  test_data,
-  treshold_value,
-  impute_hyperparameters
-)
+simple_domain_plot(featured_col, train_data, test_data, treshold_value)
 }
 \arguments{
-\item{features}{A list of features according to their modeling roles. It should contain the following elements:
-\itemize{
-\item 'featured_col': Name of the featured column in the training data. When specifying the featured column, use "jitter_*" as a prefix to the featured variable of interest.
-\item 'features_vl': Names of the columns containing viral load data (numeric values).
-\item 'features_cd': Names of the columns containing CD4 data (numeric values).
-}}
+\item{featured_col}{Name of the featured column in the training data.}
 
-\item{train_data}{The training data used to fit the MARS model.}
+\item{train_data}{The training data used to fit the model.}
 
 \item{test_data}{The testing domain data used to calculate PCA distances.}
 
 \item{treshold_value}{The threshold for domain applicability scoring.}
-
-\item{impute_hyperparameters}{A list of parameters for imputation including 'indetect' (undetectable viral load level), 'tasa_exp' (exponential distribution rate of undetectable values), and 'semi' (set a seed for reproducibility).}
 }
 \value{
-A domain plot showing PCA distances.
+A simple damain plot
 }
 \description{
 This function generates a domain plot for a simple model based on PCA
 distances of the provided data.
 }
 \examples{
-data(viral)
-data(sero)
- # Adding "jitter_" prefix to original variable
-features <- list(
-  featured_col = "jittered_cd_2022",
-  features_vl = "vl_2022",
-  features_cd = "cd_2022"
-  )
+set.seed(123)
+library(dplyr)
+# Specifying featured column
+featured_col = "cd_2022"
 train_data = viral |>
-dplyr::select("cd_2022", "vl_2022")
+  dplyr::select("cd_2022", "vl_2022")
 test_data = sero
 treshold_value = 0.99
-impute_hyperparameters = list(indetect = 40, tasa_exp = 1/13, semi = 123)
-simple_domain_plot(features, train_data, test_data, treshold_value, impute_hyperparameters)
+# Call the function
 }

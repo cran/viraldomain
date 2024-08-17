@@ -4,34 +4,16 @@
 \alias{normalized_domain_plot}
 \title{Create a Normalized Domain Plot}
 \usage{
-normalized_domain_plot(
-  features,
-  train_data,
-  test_data,
-  treshold_value,
-  impute_hyperparameters
-)
+normalized_domain_plot(featured_col, train_data, test_data, treshold_value)
 }
 \arguments{
-\item{features}{A list containing the following elements:
-\itemize{
-\item \code{featured_col}: The name of the featured column.
-\item \code{features_vl}: A character vector of feature names related to viral load.
-\item \code{features_cd}: A character vector of feature names related to cluster of differentiation.
-}}
+\item{featured_col}{The name of the featured column.}
 
 \item{train_data}{A data frame containing the training data.}
 
 \item{test_data}{A data frame containing the test data.}
 
 \item{treshold_value}{The threshold value for the domain plot.}
-
-\item{impute_hyperparameters}{A list of hyperparameters for imputation, including:
-\itemize{
-\item \code{indetect}: The undetectable viral load level.
-\item \code{tasa_exp}: The exponential distribution rate of undetectable values.
-\item \code{semi}: The seed for random number generation (for reproducibility).
-}}
 }
 \value{
 A domain plot visualizing the distances of imputed values.
@@ -41,18 +23,13 @@ This function generates a domain plot for a normalized model based on PCA
 distances of the provided data.
 }
 \examples{
-data(viral)
-data(sero)
- # Adding "jitter_" prefix to original variable
-features <- list(
-  featured_col = "jittered_cd_2022",
-  features_vl = "vl_2022",
-  features_cd = "cd_2022"
-  )
+set.seed(123)
+library(dplyr)
+# Specifying featured column
+featured_col = "cd_2022"
 train_data = viral |>
-dplyr::select("cd_2022", "vl_2022")
+  dplyr::select("cd_2022", "vl_2022")
 test_data = sero
 treshold_value = 0.99
-impute_hyperparameters = list(indetect = 40, tasa_exp = 1/13, semi = 123)
-normalized_domain_plot(features, train_data, test_data, treshold_value, impute_hyperparameters)
+# Call the function
 }

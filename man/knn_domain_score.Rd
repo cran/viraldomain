@@ -5,7 +5,7 @@
 \title{Calculate the K-Nearest Neighbor model domain applicability score}
 \usage{
 knn_domain_score(
-  featured,
+  featured_col,
   train_data,
   knn_hyperparameters,
   test_data,
@@ -13,7 +13,7 @@ knn_domain_score(
 )
 }
 \arguments{
-\item{featured}{The name of the response variable to predict.}
+\item{featured_col}{The name of the response variable to predict.}
 
 \item{train_data}{The training dataset containing predictor variables and the response variable.}
 
@@ -38,14 +38,12 @@ and computes a domain applicability score based on PCA distances.
 \examples{
 set.seed(123)
 library(dplyr)
-featured <- "cd_2022"
-# Adding jitter to original features
+featured_col <- "cd_2022"
+# Specifying features for training and testing procedures
 train_data = viral |>
-transmute(cd_2022 = jitter(cd_2022), vl_2022 = jitter(vl_2022))
-test_data = sero |>
-transmute(cd_2022 = jitter(cd_2022), vl_2022 = jitter(vl_2022))
+  dplyr::select(cd_2022, vl_2022)
+test_data = sero 
 knn_hyperparameters <- list(neighbors = 5, weight_func = "optimal", dist_power = 0.3304783)
 threshold_value <- 0.99
 # Call the function
-knn_domain_score(featured, train_data, knn_hyperparameters, test_data, threshold_value)
 }
