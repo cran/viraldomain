@@ -1,3 +1,7 @@
+# viraldomain 0.0.6
+
+* Data sets adjustments
+
 # viraldomain 0.0.5
 
 * Added a NEWS.md file to track changes to the package.
