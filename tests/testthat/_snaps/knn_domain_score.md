@@ -1,8 +1,8 @@
 # `knn_domain_score()` works
 
     Code
-      print(knn_domain_score(featured_col, train_data, knn_hyperparameters, test_data,
-        threshold_value))
+      knn_domain_score(featured_col, train_data, knn_hyperparameters, test_data,
+        threshold_value)
     Output
       # A tibble: 53 x 3
          .pred distance distance_pctl

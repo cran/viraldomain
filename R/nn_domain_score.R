@@ -17,38 +17,38 @@
 #' library(dplyr)
 #' featured_col <- "cd_2022"
 #' # Specifying features for training and testing procedures
-#' train_data = viral |>
+#' train_data = viral %>%
 #'   dplyr::select(cd_2022, vl_2022)
 #' test_data = sero 
 #' nn_hyperparameters <- list(hidden_units = 1, penalty = 0.3746312,  epochs =  480)
 #' threshold_value <- 0.99
-#' # Call the function
+#' nn_domain_score(featured_col, train_data, nn_hyperparameters, test_data, threshold_value)
 nn_domain_score <- function(featured_col, train_data, nn_hyperparameters, test_data, threshold_value) {
-  workflows::workflow() |>
+  workflows::workflow() %>%
     workflows::add_recipe(
       recipes::recipe(
         stats::as.formula(
           paste(featured_col, "~ .")
         ), 
         data = train_data)
-    ) |>
+    ) %>%
     workflows::add_model(
       parsnip::mlp(
         hidden_units = nn_hyperparameters$hidden_units,
         penalty = nn_hyperparameters$penalty,
         epochs = nn_hyperparameters$epochs
-      ) |>
-        parsnip::set_engine("nnet") |>
+      ) %>%
+        parsnip::set_engine("nnet") %>%
         parsnip::set_mode("regression")
-    ) |>
-    parsnip::fit(data = train_data) |>
-    stats::predict(test_data) |>
+    ) %>%
+    parsnip::fit(data = train_data) %>%
+    stats::predict(test_data) %>%
     dplyr::bind_cols(
       applicable::apd_pca(
         ~ ., 
         data = train_data, 
-        threshold = threshold_value) |>
-        applicable::score(test_data) |> 
+        threshold = threshold_value) %>%
+        applicable::score(test_data) %>% 
         dplyr::select(
           tidyselect::starts_with("distance"))
     )

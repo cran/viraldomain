@@ -1,8 +1,8 @@
 # `mars_domain_score()` works
 
     Code
-      print(mars_domain_score(featured_col, train_data, mars_hyperparameters,
-        test_data, threshold_value))
+      mars_domain_score(featured_col, train_data, mars_hyperparameters, test_data,
+        threshold_value)
     Output
       # A tibble: 53 x 3
          .pred distance distance_pctl

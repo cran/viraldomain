@@ -40,7 +40,7 @@ set.seed(123)
 library(dplyr)
 featured_col <- "cd_2022"
 # Specifying features for training and testing procedures
-train_data = viral |>
+train_data = viral \%>\%
   dplyr::select(cd_2022, vl_2022)
 test_data = sero 
 mars_hyperparameters <- list(num_terms = 3, prod_degree = 1, prune_method = "none")

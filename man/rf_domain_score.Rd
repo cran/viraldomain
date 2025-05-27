@@ -46,5 +46,5 @@ train_data <- viral \%>\%
 test_data <- sero
 rf_hyperparameters <- list(mtry = 2, min_n = 5, trees = 500)
 threshold_value <- 0.99
-# Call the function
+rf_domain_score(featured_col, train_data, rf_hyperparameters, test_data, threshold_value)
 }
